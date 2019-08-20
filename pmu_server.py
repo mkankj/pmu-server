@@ -47,8 +47,13 @@ class data_deal_thread(threading.Thread):
 					self.property   = upack_data_tup[2]
 					self.local_num  = upack_data_tup[10]
 
-			except BlockingIOError:
+			except BlockingIOError:   #无数据
 				pass
+
+			except ConnectionResetError:   #远程主机断开连接
+				self.__before_exit()
+				print("远程断开退出:", self.name)
+				break
 
 			'''数据匹配和计算,5s一次'''
 			if counter % 5 == 0:
